@@ -2,7 +2,6 @@
   "compilerOptions": {
     "lib": ["esnext", "dom"],
     "outDir": "lib",
-    "baseUrl": "src",
     "skipLibCheck": true,
     "esModuleInterop": true,
     "moduleResolution": "node",
@@ -13,5 +12,5 @@
     "module": "esnext",
     "target": "esnext"
   },
-  "exclude": ["src/**/*.test.ts"]
+  "include": ["src/"]
 }

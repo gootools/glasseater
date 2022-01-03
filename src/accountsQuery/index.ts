@@ -4,12 +4,11 @@ import {
   Connection,
   PublicKey,
 } from "@solana/web3.js";
-import type { Schema } from "borsh";
-import { deserializeUnchecked } from "borsh";
+import { deserializeUnchecked, Schema } from "borsh";
 import bs58 from "bs58";
 import { fetch } from "cross-fetch";
 import { chunk, isPublicKey, sleep } from "../utils";
-import type {
+import {
   Args,
   Constructable,
   Filter,
@@ -31,9 +30,9 @@ const numBytesForType = {
  * AccountsQuery is a class with a chainable
  * query-builder interface for fetching parsed Borsh accounts
  */
-export class AccountsQuery<S extends Schema = any, K = unknown, P = unknown> {
-  protected parent?: AccountsQuery<S, K, P>;
-  protected children: Array<AccountsQuery<S, K, P>> = [];
+export class AccountsQuery<S extends Schema, K> {
+  protected parent?: AccountsQuery<S, K>;
+  protected children: Array<AccountsQuery<S, K>> = [];
   protected programAddress?: string | PublicKey;
 
   private args: Args<K> = {};
@@ -48,7 +47,7 @@ export class AccountsQuery<S extends Schema = any, K = unknown, P = unknown> {
    * either a 32-44 base58 string or a web3.PublicKey
    */
   at(programAddress: string | PublicKey) {
-    const item = new AccountsQuery<S, K, P>(this.schema, this.klass);
+    const item = new AccountsQuery<S, K>(this.schema, this.klass);
     item.programAddress = programAddress;
     item.parent = this;
     this.children.push(item);
@@ -439,4 +438,4 @@ export class AccountsQuery<S extends Schema = any, K = unknown, P = unknown> {
   }
 }
 
-export type FetchParams = Parameters<AccountsQuery["fetch"]>;
+export type FetchParams = Parameters<AccountsQuery<any, any>["fetch"]>;

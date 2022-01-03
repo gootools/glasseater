@@ -1,1 +1,1 @@
-export { AccountsQuery } from "./accountsQuery";
+export { AccountsQuery, FetchParams } from "./accountsQuery";
