@@ -7,8 +7,7 @@
   "source": "src/index.ts",
   "exports": {
     "require": "./lib/index.cjs",
-    "default": "./lib/index.modern.js",
-    "ignore": "./lib/index.js"
+    "default": "./lib/index.modern.js"
   },
   "main": "./lib/index.cjs",
   "module": "./lib/index.module.js",
@@ -16,7 +15,6 @@
   "types": "./lib/index.d.ts",
   "sideEffects": false,
   "scripts": {
-    "build:ignore": "rimraf lib && tsc",
     "build": "rimraf lib && microbundle --no-compress --no-sourcemap",
     "test": "jest",
     "release": "release-it"
