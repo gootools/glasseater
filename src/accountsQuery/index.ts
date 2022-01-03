@@ -7,7 +7,7 @@ import {
 import { deserializeUnchecked, Schema } from "borsh";
 import bs58 from "bs58";
 import { fetch } from "cross-fetch";
-import { chunk, isPublicKey, sleep } from "../utils";
+import { chunk, isPublicKey, sleep } from "../utils.js";
 import {
   Args,
   Constructable,
@@ -16,7 +16,7 @@ import {
   KeyOfMap,
   NonFunctionPropertyNames,
   RequestID,
-} from "./types";
+} from "./types.js";
 
 const numBytesForType = {
   u8: 1,
