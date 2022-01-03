@@ -46,7 +46,7 @@ export class AccountsQuery<S extends Schema, K> {
    * the public key or address of the program
    * either a 32-44 base58 string or a web3.PublicKey
    */
-  at(programAddress: string | PublicKey) {
+  for(programAddress: string | PublicKey) {
     const item = new AccountsQuery<S, K>(this.schema, this.klass);
     item.programAddress = programAddress;
     item.parent = this;
@@ -96,7 +96,7 @@ export class AccountsQuery<S extends Schema, K> {
    * accepts an object of extra custom data to include inside the
    * $metadata object attached of each record that's returned
    */
-  withMetadata(metadata: Args<K>["metadata"]) {
+  injectMetadata(metadata: Args<K>["metadata"]) {
     this.args.metadata = metadata;
     return this;
   }
@@ -305,7 +305,7 @@ export class AccountsQuery<S extends Schema, K> {
     const { fields: f } = this.schema.get(this.klass) as any;
 
     if (!this.programAddress)
-      throw new Error("missing program address - use `.at()`");
+      throw new Error("missing program address - use `.for()`");
 
     const getLength = (type: any) => {
       const dictionary = numBytesForType as any;
