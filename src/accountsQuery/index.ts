@@ -115,7 +115,7 @@ export class AccountsQuery<S extends Schema, K> {
       debug = false,
       includeEmptyResults = false,
       includeMetadata = true,
-      maxNumberOfReqeustsPerBatch = 100,
+      maxNumberOfRequestsPerBatch = 100,
       msDelayBetweenBatchedRequests = 1000,
     }: {
       customDeserializer?: typeof deserializeUnchecked;
@@ -123,7 +123,7 @@ export class AccountsQuery<S extends Schema, K> {
       debug?: boolean;
       includeEmptyResults?: boolean;
       includeMetadata?: boolean;
-      maxNumberOfReqeustsPerBatch?: number;
+      maxNumberOfRequestsPerBatch?: number;
       msDelayBetweenBatchedRequests?: number;
     } = {}
   ): Promise<
@@ -165,7 +165,7 @@ export class AccountsQuery<S extends Schema, K> {
 
     const batches = chunk(
       query.map((q) => q.payload),
-      maxNumberOfReqeustsPerBatch
+      maxNumberOfRequestsPerBatch
     );
 
     const json: Array<{
