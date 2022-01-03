@@ -27,7 +27,7 @@ import { AccountsQuery } from "glasseater";
 const query = new AccountsQuery(SCHEMA, Proposal);
 
 query
-  .at(programId)
+  .for(programId)
   .select(["config"])
   .where({
     accountType,

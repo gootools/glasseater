@@ -11,7 +11,7 @@ beforeEach(() => {
 
 test("no filters", async () => {
   const s = new AccountsQuery(SCHEMA, AccountMetaData);
-  s.at("123");
+  s.for("123");
 
   await s.fetch("confirmed", {
     customFetch,
@@ -39,7 +39,7 @@ test("no filters", async () => {
 test("where", async () => {
   const s = new AccountsQuery(SCHEMA, AccountMetaData);
 
-  s.at("123").where({
+  s.for("123").where({
     pubkey: new PublicKey("dammHkt7jmytvbS3nHTxQNEcP59aE57nxwV21YdqEDN"),
   });
 
