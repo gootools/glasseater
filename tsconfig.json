@@ -1,16 +1,8 @@
 {
+  "extends": "./tsconfig-base.json",
   "compilerOptions": {
-    "lib": ["esnext", "dom"],
-    "outDir": "lib",
-    "skipLibCheck": true,
-    "esModuleInterop": true,
-    "moduleResolution": "node",
-    "strict": true,
-    "noImplicitAny": true,
-    "declaration": true,
-    "declarationMap": true,
     "module": "esnext",
+    "outDir": "dist/mjs",
     "target": "esnext"
-  },
-  "include": ["src/"]
+  }
 }

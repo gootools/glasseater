@@ -13,10 +13,11 @@ Docs coming soon...
 - autocompletes and type checks everything it possibly can
 - enables advanced local filtering
 - accepts custom borsh deserializers and fetch functions
+- zero dependencies (for the time being)
 
 ### Installation
 
-`(npm|pnpm|yarn) add glasseater`
+`(npm|pnpm|yarn) add glasseater @solana/web3.js`
 
 ### Usage
 
@@ -27,7 +28,7 @@ const query = new AccountsQuery(SCHEMA, Proposal);
 
 query
   .at(programId)
-  .select(['config'])
+  .select(["config"])
   .where({
     accountType,
     realm: new PublicKey(realmId),
