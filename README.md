@@ -43,4 +43,7 @@ const proposals = await query.fetch();
 - anchor IDL support
 - joins
 - simpler interface
-- deduplication a la https://swr.vercel.app
+- caching and deduplication*
+
+_\* like [swr](https://swr.vercel.app), but this and batching might be better handled with a [service worker](https://github.com/gootools/solana-sidekick)_
+
