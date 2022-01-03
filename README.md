@@ -4,4 +4,4 @@ Tools that will [eat glass](https://www.theblockcrypto.com/post/123515/solana-la
 
 ## Usage
 
-`(npm|pnpm|yarn) install glasseater`
+`(npm|pnpm|yarn) add glasseater`

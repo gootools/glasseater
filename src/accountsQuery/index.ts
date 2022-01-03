@@ -8,7 +8,7 @@ import type { Schema } from "borsh";
 import { deserializeUnchecked } from "borsh";
 import bs58 from "bs58";
 import { fetch } from "cross-fetch";
-import { chunk, sleep } from "../utils";
+import { chunk, isPublicKey, sleep } from "../utils";
 import type {
   Args,
   Constructable,
@@ -111,6 +111,7 @@ export class AccountsQuery<S extends Schema = any, K = unknown, P = unknown> {
       | { commitment?: Commitment; endpoint?: string }
       | Commitment = "confirmed",
     {
+      customDeserializer = deserializeUnchecked,
       customFetch = fetch,
       debug = false,
       includeEmptyResults = false,
@@ -118,6 +119,7 @@ export class AccountsQuery<S extends Schema = any, K = unknown, P = unknown> {
       maxNumberOfReqeustsPerBatch = 100,
       msDelayBetweenBatchedRequests = 1000,
     }: {
+      customDeserializer?: typeof deserializeUnchecked;
       customFetch?: typeof fetch;
       debug?: boolean;
       includeEmptyResults?: boolean;
@@ -211,7 +213,7 @@ export class AccountsQuery<S extends Schema = any, K = unknown, P = unknown> {
         ) {
           const { dataSize, dataSlice } = q.options;
 
-          const ob: any = deserializeUnchecked(
+          const ob: any = customDeserializer(
             q.instance.schema,
             q.instance.klass,
             Buffer.concat([
@@ -237,7 +239,7 @@ export class AccountsQuery<S extends Schema = any, K = unknown, P = unknown> {
           );
         } else if (!q.options.dataSize || q.instance.args.select !== false) {
           return Object.entries(
-            deserializeUnchecked(
+            customDeserializer(
               q.instance.schema,
               q.instance.klass,
               Buffer.from(...(r.account.data as [any, any]))
@@ -365,18 +367,21 @@ export class AccountsQuery<S extends Schema = any, K = unknown, P = unknown> {
             if (v === null) {
               // zero-fill null values
               data = bs58.encode(Buffer.alloc(fields[k].length));
-            } else if (v instanceof PublicKey) {
-              data = v.toBase58();
+            } else if (isPublicKey(v)) {
+              // instanceof PublicKey not working, so use custom method
+              data = (v as PublicKey).toBase58();
             } else {
               data = bs58.encode([v].flat() as any[]);
             }
 
             if (bs58.decode(data).length !== fields[k].length) {
               console.error({
-                k,
-                data,
-                dataLength: bs58.decode(data).length,
-                fieldLength: fields[k].length,
+                wrongLength: {
+                  k,
+                  data,
+                  dataLength: bs58.decode(data).length,
+                  fieldLength: fields[k].length,
+                },
               });
 
               throw new Error("wrong length");
