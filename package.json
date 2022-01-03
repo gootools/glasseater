@@ -1,7 +1,7 @@
 {
   "name": "glasseater",
   "repository": "https://github.com/gootools/glasseater",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "private": false,
   "type": "module",
   "source": "src/index.ts",

@@ -6,9 +6,8 @@ import {
 } from "@solana/web3.js";
 import type { Schema } from "borsh";
 import { deserializeUnchecked } from "borsh";
-import { decode, encode } from "bs58";
-import type { fetch } from "cross-fetch";
-import "cross-fetch/polyfill";
+import bs58 from "bs58";
+import { fetch } from "cross-fetch";
 import { chunk, sleep } from "../utils";
 import type {
   Args,
@@ -112,7 +111,7 @@ export class AccountsQuery<S extends Schema = any, K = unknown, P = unknown> {
       | { commitment?: Commitment; endpoint?: string }
       | Commitment = "confirmed",
     {
-      customFetch = (global as any).fetch,
+      customFetch = fetch,
       debug = false,
       includeEmptyResults = false,
       includeMetadata = true,
@@ -365,18 +364,18 @@ export class AccountsQuery<S extends Schema = any, K = unknown, P = unknown> {
 
             if (v === null) {
               // zero-fill null values
-              data = encode(Buffer.alloc(fields[k].length));
+              data = bs58.encode(Buffer.alloc(fields[k].length));
             } else if (v instanceof PublicKey) {
               data = v.toBase58();
             } else {
-              data = encode([v].flat() as any[]);
+              data = bs58.encode([v].flat() as any[]);
             }
 
-            if (decode(data).length !== fields[k].length) {
+            if (bs58.decode(data).length !== fields[k].length) {
               console.error({
                 k,
                 data,
-                dataLength: decode(data).length,
+                dataLength: bs58.decode(data).length,
                 fieldLength: fields[k].length,
               });
 
