@@ -1,0 +1,1 @@
+export { AccountsQuery } from "./accountsQuery";
