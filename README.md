@@ -24,9 +24,9 @@ Docs coming soon...
 ```typescript
 import { AccountsQuery } from "glasseater";
 
-const query = new AccountsQuery(SCHEMA, Proposal);
+const proposalsQuery = new AccountsQuery(SCHEMA, Proposal);
 
-query
+proposalsQuery
   .for(programId)
   .select(["config"])
   .where({
@@ -34,7 +34,7 @@ query
     realm: new PublicKey(realmId),
   });
 
-const proposals = await query.fetch();
+const proposals = await proposalsQuery.fetch();
 ```
 
 ### Wishlist
