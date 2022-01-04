@@ -1,7 +1,7 @@
 {
   "name": "glasseater",
   "repository": "https://github.com/gootools/glasseater",
-  "version": "0.2.4",
+  "version": "0.2.5",
   "private": false,
   "main": "dist/cjs/index.js",
   "module": "dist/mjs/index.js",
