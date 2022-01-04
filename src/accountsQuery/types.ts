@@ -42,8 +42,11 @@ export interface Args<K> {
     [P in keyof Pick<K, NonFunctionPropertyNames<K>>]?:
       | Pick<K, NonFunctionPropertyNames<K>>[P]
       | ((
-          account: Account<K>,
-          field: Pick<K, NonFunctionPropertyNames<K>>[P]
+          field: Pick<K, NonFunctionPropertyNames<K>>[P],
+          maybeInstantiatedAccount: Partial<
+            Pick<K, NonFunctionPropertyNames<K>>
+          > &
+            Pick<K, FunctionPropertyNames<K>>
         ) => boolean)
       | null;
   };
