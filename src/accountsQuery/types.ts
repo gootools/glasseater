@@ -1,4 +1,6 @@
-// xxx: purposely .ts and .d.ts
+// xxx: purposely .ts and not .d.ts
+
+import { PublicKey } from "@solana/web3.js";
 
 export type KeyOfMap<M extends Map<unknown, unknown>> = M extends Map<
   infer K,
@@ -26,12 +28,23 @@ export interface Filter {
 
 export type RequestID = string | number | Array<string | number>;
 
+export type Account<K> = Partial<Pick<K, NonFunctionPropertyNames<K>>> &
+  Pick<K, FunctionPropertyNames<K>> & {
+    $metadata: {
+      pubkey: PublicKey;
+      requestId: RequestID;
+    } & any;
+  };
+
 export interface Args<K> {
   select?: Array<keyof Pick<K, NonFunctionPropertyNames<K>>> | false;
   where?: {
     [P in keyof Pick<K, NonFunctionPropertyNames<K>>]?:
       | Pick<K, NonFunctionPropertyNames<K>>[P]
-      | ((field: Pick<K, NonFunctionPropertyNames<K>>[P]) => boolean)
+      | ((
+          account: Account<K>,
+          field: Pick<K, NonFunctionPropertyNames<K>>[P]
+        ) => boolean)
       | null;
   };
   metadata?: Record<string, any>;

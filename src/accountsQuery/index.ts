@@ -8,15 +8,7 @@ import { deserializeUnchecked, Schema } from "borsh";
 import bs58 from "bs58";
 import { fetch } from "cross-fetch";
 import { chunk, isPublicKey, sleep } from "../utils.js";
-import {
-  Args,
-  Constructable,
-  Filter,
-  FunctionPropertyNames,
-  KeyOfMap,
-  NonFunctionPropertyNames,
-  RequestID,
-} from "./types.js";
+import { Account, Args, Constructable, Filter, KeyOfMap } from "./types.js";
 
 const numBytesForType = {
   u8: 1,
@@ -134,17 +126,7 @@ export class AccountsQuery<S extends Schema, K> {
       maxNumberOfRequestsPerBatch?: number;
       msDelayBetweenBatchedRequests?: number;
     } = defaults[1]
-  ): Promise<
-    Array<
-      Partial<Pick<K, NonFunctionPropertyNames<K>>> &
-        Pick<K, FunctionPropertyNames<K>> & {
-          $metadata: {
-            pubkey: PublicKey;
-            requestId: RequestID;
-          } & any;
-        }
-    >
-  > {
+  ): Promise<ReadonlyArray<Account<K>>> {
     if (this.parent) throw new Error("call fetch on the root instance");
 
     const [commitment = "confirmed", endpoint = clusterApiUrl("mainnet-beta")] =
@@ -271,15 +253,25 @@ export class AccountsQuery<S extends Schema, K> {
         }
       });
 
+      const tryToMakeClass: any = (data: any) => {
+        try {
+          return new this.klass(data);
+        } catch (err) {
+          return data;
+        }
+      };
+
       return val
         .filter((v) => {
-          const pass = q.functions.every(([k, fn]: any) => fn(v.data[k]));
+          const pass = q.functions.every(([k, fn]: any) =>
+            fn(v.data[k], tryToMakeClass(v.data))
+          );
           if (!pass) fails.add(counter);
           counter++;
           return v && pass;
         })
         .map((v) => {
-          const ob = v.data;
+          const ob = tryToMakeClass(v.data);
           if (includeMetadata) {
             ob.$metadata = {
               ...(q.instance.args.metadata ?? {}),
