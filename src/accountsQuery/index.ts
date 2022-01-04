@@ -26,6 +26,14 @@ const numBytesForType = {
   pubkey: 32,
 };
 
+const defaults = ["confirmed", {}];
+export const setDefaults = (
+  ...fetchParams: Parameters<AccountsQuery<any, any>["fetch"]>
+) => {
+  defaults[0] = (fetchParams[0] as any) || defaults[0];
+  defaults[1] = (fetchParams[1] as any) || defaults[1];
+};
+
 /**
  * AccountsQuery is a class with a chainable
  * query-builder interface for fetching parsed Borsh accounts
@@ -108,7 +116,7 @@ export class AccountsQuery<S extends Schema, K> {
     commitmentOrConnection:
       | Connection
       | { commitment?: Commitment; endpoint?: string }
-      | Commitment = "confirmed",
+      | Commitment = defaults[0],
     {
       customDeserializer = deserializeUnchecked,
       customFetch = fetch,
@@ -125,7 +133,7 @@ export class AccountsQuery<S extends Schema, K> {
       includeMetadata?: boolean;
       maxNumberOfRequestsPerBatch?: number;
       msDelayBetweenBatchedRequests?: number;
-    } = {}
+    } = defaults[1]
   ): Promise<
     Array<
       Partial<Pick<K, NonFunctionPropertyNames<K>>> &
@@ -437,5 +445,3 @@ export class AccountsQuery<S extends Schema, K> {
     };
   }
 }
-
-export type FetchParams = Parameters<AccountsQuery<any, any>["fetch"]>;
