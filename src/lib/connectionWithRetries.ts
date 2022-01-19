@@ -1,5 +1,6 @@
-import { Commitment, Connection } from "@solana/web3.js";
-import { FunctionPropertyNames } from "accountsQuery/types";
+import type { Commitment } from "@solana/web3.js";
+import { Connection } from "@solana/web3.js";
+import { FunctionPropertyNames } from "../accountsQuery/types.js";
 
 // this is very likely to change so don't rely on it just yet
 export const connectionWithRetries =
