@@ -7,7 +7,7 @@ import {
 import { deserializeUnchecked, Schema } from "borsh";
 import bs58 from "bs58";
 import { fetch } from "cross-fetch";
-import { chunk, isPublicKey, sleep } from "../utils.js";
+import { chunk, isPublicKey, sleep } from "../lib/utils.js";
 import { Account, Args, Constructable, Filter, KeyOfMap } from "./types.js";
 
 const numBytesForType = {
